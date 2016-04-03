@@ -6,17 +6,19 @@ def write_serial text
 end
 
 Shoes.app {
-  @note = para "Status Here"
-  stack {
-    button("Smile").click do
+  @note = para "Status Here", size: 'x-large'
+  flow {
+    image("smile.png").click do
       @note.replace "smiling"
       write_serial "smile"
     end
-    button("Frown").click do
+    image("frown.png").click do
       @note.replace "frowning"
       write_serial "frown"
     end
-    para "custom text (6 char 2 lines)"
+  }
+  stack {
+    para "custom text (6 char 2 lines)", size: 'x-large'
     flow do
       @input = edit_line
       button("show").click do
