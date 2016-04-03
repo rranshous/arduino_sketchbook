@@ -10,22 +10,13 @@ Shoes.app {
   flow {
     image("smile.png").click do
       @note.replace "smiling"
-      write_serial "smile"
+      write_serial("smile") or @note.replace "failed to smile"
     end
     image("frown.png").click do
       @note.replace "frowning"
-      write_serial "frown"
+      write_serial("frown") or @note.replace "failed to frown"
     end
   }
-  stack {
-    para "custom text (6 char 2 lines)", size: 'x-large'
-    flow do
-      @input = edit_line
-      button("show").click do
-        @note.replace "showing: #{@input.text}"
-        write_serial @input.text
-      end
-    end
-  }
+  #stack { }
 }
 
