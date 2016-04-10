@@ -9,7 +9,7 @@ OFFSET=2
 ACTIVE=:ACTIVE
 INACTIVE=:INACTIVE
 
-$matrix_state = {}
+$matrix_state = Hash.new(INACTIVE)
 
 def other_state state
   state == ACTIVE ? INACTIVE : ACTIVE
@@ -35,23 +35,25 @@ def write_code
   end
 end
 
-draw_oval = lambda { |i, j, state|
-  lambda {
-    x = i * (OFFSET + RADIUS)
-    y = j * (OFFSET + RADIUS)
-    new_stroke = state == ACTIVE ? red : black
-    puts "drawing oval: #{x}:#{y} #{state} #{new_stroke}"
-    fill new_stroke
-    $matrix_state[[i,j]] = state
-    oval(x, y, RADIUS).click {
-      instance_exec &draw_oval.call(i, j, other_state(state))
-    }
-    write_code
-  }
-}
-
 Shoes.app {
   each_cell do |i, j|
-    instance_exec &draw_oval.call(i, j, INACTIVE)
+    x = i * (OFFSET + RADIUS)
+    y = j * (OFFSET + RADIUS)
+    fill black
+    dot = oval(x, y, RADIUS)
+    dot.click {
+      puts "click #{i} #{j}"
+      current_state = $matrix_state[[i, j]]
+      new_state = other_state(current_state)
+      puts "current state: #{current_state}"
+      puts "new state: #{new_state}"
+      new_fill = new_state == ACTIVE ? red : black
+      puts "new fill: #{new_fill}"
+      $matrix_state[[i,j]] = new_state
+      puts "redrawing oval: #{x}:#{y} #{new_state} #{new_fill}"
+      puts "dot: #{dot}"
+      dot.style fill: new_fill
+      write_code
+    }
   end
 }

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# mostly cloudy
+# overcast
+# a few clouds
+# fair
+# fair and breezy
+# partly cloudy and breezy
+# light rain
+# fog/mist
+
+curl --silent http://w1.weather.gov/xml/current_obs/display.php\?stid\=KATL | grep "<weather>" | cut -d">" -f2 | cut -d"<" -f1 | awk '{print tolower($0)}'
