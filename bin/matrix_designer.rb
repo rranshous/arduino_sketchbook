@@ -9,31 +9,49 @@ OFFSET=5
 ACTIVE=:ACTIVE
 INACTIVE=:INACTIVE
 
+$matrix_state = {}
+
 def other_state state
   state == ACTIVE ? INACTIVE : ACTIVE
 end
 
-draw_oval = lambda { |x, y, state|
+def each_cell &blk
+  16.times do |j|
+    24.times do |i|
+      blk.call i, j
+    end
+  end
+end
+
+def write_code
+  open('matrix_code.txt', 'w') do |fh|
+    each_cell do |i, j|
+      state = $matrix_state[[i, j]]
+      if state == ACTIVE
+        line = "matrix.drawPixel(#{i}, #{j}, 1);"
+        fh.puts line
+      end
+    end
+  end
+end
+
+draw_oval = lambda { |i, j, state|
   lambda {
+    x = i * (OFFSET + RADIUS)
+    y = j * (OFFSET + RADIUS)
     new_stroke = state == ACTIVE ? red : black
     puts "drawing oval: #{x}:#{y} #{state} #{new_stroke}"
     fill new_stroke
+    $matrix_state[[i,j]] = state
     oval(x, y, RADIUS).click {
-      puts "handlng click #{self}"
-      instance_exec &draw_oval.call(x, y, other_state(state))
+      instance_exec &draw_oval.call(i, j, other_state(state))
     }
+    write_code
   }
 }
 
 Shoes.app {
-  16.times do |j|
-    puts "j: #{j}"
-    24.times do |i|
-      puts "i: #{i}"
-      x = i * (OFFSET + RADIUS)
-      y = j * (OFFSET + RADIUS)
-      puts "#{x}:#{y}"
-      instance_exec &draw_oval.call(x, y, INACTIVE)
-    end
+  each_cell do |i, j|
+    instance_exec &draw_oval.call(i, j, INACTIVE)
   end
 }

@@ -1,0 +1,3 @@
+matrix.drawPixel(0, 0, 1);
+matrix.drawPixel(1, 0, 1);
+matrix.drawPixel(2, 0, 1);
