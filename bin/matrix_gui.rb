@@ -35,7 +35,10 @@ Shoes.app {
       write_console "frowning"
       write_serial("frown") and clear_on_delay or write_console("failed to frown")
     end
+    image("heart.png").click do
+      write_console "hearting"
+      write_serial("heart") and clear_on_delay or write_console("failed to heart")
+    end
   }
-  #stack { }
 }
 
