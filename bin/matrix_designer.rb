@@ -5,7 +5,7 @@
 # ardiuno code to produce that picture
 
 RADIUS=35
-OFFSET=5
+OFFSET=2
 ACTIVE=:ACTIVE
 INACTIVE=:INACTIVE
 
