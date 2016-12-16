@@ -23,7 +23,7 @@ void setup() {
   inputString.reserve(200);
   matrix.begin(ADA_HT1632_COMMON_16NMOS);
   matrix.clearScreen(); 
-  matrixHeight = matrix.height()
+  matrixHeight = matrix.height();
   delay(500);
   Serial.println("starting");
 }
@@ -54,11 +54,6 @@ void clearInput() {
 void drawFill(float percent) {
   matrix.clearScreen();
   float top = (percent / 100) * matrix.width();
-  /*
-  for(int i=0; i<top; i++) {
-    matrix.drawLine(i, 0, i, matrix.height(), 1);
-  }
-  */
   matrix.fillRect(0, 0, top, matrix.height(), 1);
   matrix.writeScreen();
   lastPercent = percent;
