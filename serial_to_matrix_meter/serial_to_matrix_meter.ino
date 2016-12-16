@@ -13,6 +13,8 @@ Adafruit_HT1632LEDMatrix matrix = Adafruit_HT1632LEDMatrix(HT_DATA, HT_WR, HT_CS
 
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
+float lastPercent = 0;
+int matrixHeight = 0;
 
 void setup() {
   // initialize serial:
@@ -21,6 +23,7 @@ void setup() {
   inputString.reserve(200);
   matrix.begin(ADA_HT1632_COMMON_16NMOS);
   matrix.clearScreen(); 
+  matrixHeight = matrix.height()
   delay(500);
   Serial.println("starting");
 }
@@ -51,10 +54,14 @@ void clearInput() {
 void drawFill(float percent) {
   matrix.clearScreen();
   float top = (percent / 100) * matrix.width();
+  /*
   for(int i=0; i<top; i++) {
     matrix.drawLine(i, 0, i, matrix.height(), 1);
   }
+  */
+  matrix.fillRect(0, 0, top, matrix.height(), 1);
   matrix.writeScreen();
+  lastPercent = percent;
 }
 
 //  matrix.drawLine(9, 12, 13, 12, 0);
